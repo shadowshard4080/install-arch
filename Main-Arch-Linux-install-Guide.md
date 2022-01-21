@@ -3,6 +3,7 @@
 ---
 - [Download Arch ISO](https://archlinux.org/download/)
 - Write to USB With [Balena Etcher](https://www.balena.io/etcher/), [Rufus](https://rufus.ie/en/#), or [Ventoy(*Recomended*)](https://www.ventoy.net/en/download.html)
+- Boot to the [Live USB](https://en.wikipedia.org/wiki/Live_USB)
 ### Installing
 ---
 - Set Time  
@@ -13,6 +14,7 @@ timedatectl set-ntp true
 ```
 cfdisk /dev/sdx
 ```
+
 |Mount Point|   Partition	   | Partition Type |  Recommended Sizes  |
 |-----------|----------------|----------------|---------------------|
 |`/mnt/boot`|`/dev/efi_part` |efi_system_part |*500MB*              |
@@ -65,8 +67,8 @@ echo "[your_computerhostname]" > /etc/hostname
 ```
 - Setup Users  
 
-Set your root password with `passwd`
-Edit your sudoers file with `EDITOR='nano' visudo`, find and uncomment<br>`#%sudo ALL=(ALl) All`. So it should look like this:  
+Set root password with `passwd`
+Edit sudoers file with `EDITOR='nano' visudo`, find and uncomment<br>`#%sudo ALL=(ALl) All`. So it should look like this:  
 ```
 %sudo ALL=(ALL) ALL
 ```
@@ -94,7 +96,7 @@ do a `reboot now` to and restart into the new arch system.
 >You can do all of this while in the `arch-chroot`
 ---
 log in as root with either [`su`](https://wiki.archlinux.org/title/su) or by exiting the current session and using the username `root`.
-now install the required packages for your desktop environment, for example kde-plasma.
+now install the required packages for a desktop environment, for example kde-plasma.
 ```
 pacman -Sy xorg plasma-desktop sddm [terminal_emulator] [web_browser]
 systemctl enable sddm
