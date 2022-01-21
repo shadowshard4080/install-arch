@@ -109,3 +109,4 @@ Then to use it, use
 $ yay -S [package]
 ```
 yay uses the same syntax as pacman does.
+*[see more on the wiki pages](https://github.com/El-Wumbus/install-arch/wiki)*
