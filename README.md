@@ -1,3 +1,4 @@
+*[view wiki pages](https://github.com/El-Wumbus/install-arch/wiki)*
 # Arch Linux install Guide
 ### Installing
 ---
