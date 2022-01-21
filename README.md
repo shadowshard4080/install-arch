@@ -108,5 +108,8 @@ Then to use it, use
 ```
 $ yay -S [package]
 ```
-yay uses the same syntax as pacman does.
-*[see more on the wiki pages](https://github.com/El-Wumbus/install-arch/wiki)*
+yay uses the same syntax as pacman does.  
+*[see more on the wiki pages](https://github.com/El-Wumbus/install-arch/wiki)* or clone them to your local system
+```
+git clone https://github.com/El-Wumbus/install-arch.wiki.git
+```
