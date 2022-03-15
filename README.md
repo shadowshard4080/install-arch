@@ -1,5 +1,7 @@
 *[view wiki pages](https://github.com/El-Wumbus/install-arch/wiki)*  
 # Arch Linux install Guide
+> Note: For an Updated, more accurate version of this doccument, go to [el-wumbus.github.io/wiki](https://el-wumbus.github.io/wiki/Main-Arch-Linux-install-Guide.html) 
+
 ### Installing
 ---
 - Set Time  
