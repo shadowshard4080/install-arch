@@ -81,8 +81,8 @@ type exit the chroot by typing `exit` then unmount the mounted partitions using 
 do a `reboot now` to and restart into the new arch system.
 ### Desktop environment installation
 ---
-log in as root with either [`su`](https://wiki.archlinux.org/title/su) or by exiting the current session and using the username `root`.
-now install the required packages for your desktop environment, for example kde-plasma.
+Mount the partitions, log in as root with either [`su`](https://wiki.archlinux.org/title/su) or by exiting the current session and using the username `root`.
+then install the required packages for your desktop environment, for example kde-plasma:
 ```
 pacman -Sy xorg plasma-desktop sddm [terminal_emulator] [web_browser]
 systemctl enable sddm
