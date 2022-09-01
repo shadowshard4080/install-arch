@@ -31,7 +31,7 @@ swapon /dev/swap
 ```
 - Install needed things 
 ```
-pacstrap /mnt base linux-lts linux-lts-headers linux-firmware nano
+pacstrap /mnt base linux-lts linux-lts-headers linux-firmware nano sudo
 ```
 - Generate fstab
 ```
