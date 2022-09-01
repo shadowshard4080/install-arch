@@ -59,6 +59,7 @@ Edit your sudoers file with `EDITOR='nano' visudo`, find and uncomment<br>`#%sud
 ```
 Create a user account with `sudo` permissions by using
 ```
+groupadd sudo
 useradd -m -G wheel,sudo [your_username_here]
 passwd [your_username_here]
 ```
