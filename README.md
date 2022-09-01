@@ -67,6 +67,11 @@ Install grub bootloader
 ```
 pacman -Sy grub
 grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
+```
+If return is "grub-install: error: efibootmgr: not found", install efibootmgr with the first line. Otherwise skip to the next.
+```
+pacman -Sy efibootmgr
+
 grub-mkconfig -o /boot/grub/grub.cfg
 ```
 If dual-booting edit the grub config at `/etc/default/grub` and setting `GRUB_DISABLE_OS_PROBER=true` to false, `GRUB_DISABLE_OS_PROBER=false`
