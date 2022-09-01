@@ -68,7 +68,7 @@ Install grub bootloader
 pacman -Sy grub
 grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
 ```
-If return is "grub-install: error: efibootmgr: not found", install efibootmgr with the first line. Otherwise skip to the next.
+If return is "grub-install: error: efibootmgr: not found", install efibootmgr with the first line and run the above command again. Otherwise skip to the next.
 ```
 pacman -Sy efibootmgr
 
