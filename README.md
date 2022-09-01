@@ -26,7 +26,7 @@ mkfs.fat -F 32 /dev/_efi_system_partition_
 - Mount partitions
 ```
 mount /dev/_root_partition_ /mnt
-mount /dev/_efi_system_partition_ /mnt/boot
+mount --mkdir /dev/efi_system_partition /mnt/boot
 swapon /dev/swap
 ```
 - Install needed things 
