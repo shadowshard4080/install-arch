@@ -84,8 +84,9 @@ do a `reboot now` to and restart into the new arch system.
 Mount the partitions, log in as root with either [`su`](https://wiki.archlinux.org/title/su) or by exiting the current session and using the username `root`.
 then install the required packages for your desktop environment, for example kde-plasma:
 ```
-pacman -Sy xorg plasma-desktop sddm [terminal_emulator] [web_browser]
+pacman -Sy xorg plasma-desktop sddm [terminal_emulator] [web_browser] git networkmanager
 systemctl enable sddm
+systemctl enable NetworkManager.service
 reboot now
 ```
 now on boot you should see a login screen, just log in with the user account you made earlier.
