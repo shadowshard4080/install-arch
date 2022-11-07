@@ -124,6 +124,7 @@ Scroll down to the multilib section and uncomment the `[multilib]` line and the 
 Now run:
 ```
 sudo pacman -Syu Steam
+```
 
 Graphics drivers should work out of the box. To install GPU-specific drivers for gaming, refer to the Arch Wiki.
 [Nvidia Graphics](https://wiki.archlinux.org/title/NVIDIA)
@@ -131,7 +132,7 @@ Graphics drivers should work out of the box. To install GPU-specific drivers for
 
 
 
-*[See more about installing Arch Linux on El-Wumbus's [wiki pages](https://github.com/El-Wumbus/install-arch/wiki), or clone them to your local system.*
+*See more about installing Arch Linux on El-Wumbus's [wiki pages](https://github.com/El-Wumbus/install-arch/wiki), or clone them to your local system.*
 ```
 git clone https://github.com/El-Wumbus/install-arch.wiki.git
 ```
