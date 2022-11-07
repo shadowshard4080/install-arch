@@ -127,7 +127,9 @@ sudo pacman -Syu Steam
 ```
 
 Graphics drivers should work out of the box. To install GPU-specific drivers for gaming, refer to the Arch Wiki.
+
 [Nvidia Graphics](https://wiki.archlinux.org/title/NVIDIA)
+
 [AMD Graphics](https://wiki.archlinux.org/title/AMDGPU)
 
 
