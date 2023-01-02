@@ -132,7 +132,9 @@ Graphics drivers should work out of the box. To install GPU-specific drivers for
 
 [AMD Graphics](https://wiki.archlinux.org/title/AMDGPU)
 
+You may also find the Lutris docs helpful.
 
+https://github.com/lutris/docs/blob/master/InstallingDrivers.md#arch--manjaro--other-arch-linux-derivatives
 
 *See more about installing Arch Linux on El-Wumbus's [wiki pages](https://github.com/El-Wumbus/install-arch/wiki), or clone them to your local system.*
 ```
