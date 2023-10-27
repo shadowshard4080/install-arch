@@ -38,7 +38,7 @@ swapon /dev/swap
 ```
 - Install needed things 
 ```
-pacstrap /mnt base linux-lts linux-lts-headers linux-firmware needed base-devel nano sudo
+pacstrap /mnt base linux-lts linux-lts-headers linux-firmware base-devel nano sudo
 ```
 - Generate fstab
 ```
@@ -88,7 +88,7 @@ Exit the chroot by typing `exit` then unmount the mounted partitions using `umou
 Mount the partitions, log in as root with either [`su`](https://wiki.archlinux.org/title/su) or by exiting the current session and using the username `root`.
 Then install the required packages for your desktop environment, for example kde-plasma:
 ```
-pacman -Sy xorg plasma-desktop sddm [terminal_emulator] [web_browser] git networkmanager packagekit-qt5 plasma-wayland-session [optional: 'kde-applications']
+pacman -Sy xorg plasma-desktop sddm [terminal_emulator] [web_browser] git networkmanager packagekit-qt5 plasma-wayland-session discover plasma-nm [optional: 'kde-applications']
 systemctl enable sddm
 systemctl enable NetworkManager.service
 reboot now
