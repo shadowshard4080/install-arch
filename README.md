@@ -7,9 +7,15 @@
 ```
 timedatectl set-ntp true
 ```
-- Partition with `cfdisk`  
+- Determine the disk you want to use with `fdisk`  
 ```
-cfdisk /dev/sdx
+fdisk -l
+```
+- Partition with `cfdisk`
+
+Your drive will be /dev/nvme, /dev/sda, or something similar.
+```
+cfdisk /dev/sda
 ```
 |Mount Point|Partition		 |Partition Type  |Recommended Sizes |
 |-----------|----------------|----------------|------------------|
