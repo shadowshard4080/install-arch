@@ -51,7 +51,7 @@ swapon /dev/swap
 
 - Install needed things
 
-> the linux LTS package means long-time-support, you may replace these kernel packages with the kerenl of your choice.
+> the linux LTS package means long-time-support, you may replace these kernel packages with the kernel of your choice.
 
 ``` bash
 pacstrap /mnt base base-devel linux-lts linux-lts-headers linux-firmware nano sudo
@@ -126,16 +126,16 @@ pacman -S dhcpcd
 systemctl enable dhcpcd 
 ```
 
-type exit the chroot by typing `exit` then unmount the mounted partitions using `umount /dev/sdx1` for all the mounted partitions.  
+Exit the chroot by typing `exit` then unmount the mounted partitions using `umount /dev/sdx1` for all the mounted partitions.  
 
-do a `reboot now` to and restart into the new arch system.  
+Do a `reboot now` to and restart into the new arch system.  
 
 ### Desktop environment installation
 
 ---
 >You can do all of this while in the `arch-chroot`
 
-log in as root with either [`su`](https://wiki.archlinux.org/title/su) or by exiting the current session and using the username `root`.
+Log in as root with either [`su`](https://wiki.archlinux.org/title/su) or by exiting the current session and using the username `root`.
 now install the required packages for a desktop environment, for example kde-plasma.
 
 ``` bash
@@ -143,7 +143,7 @@ pacman -Sy xorg plasma-desktop sddm [terminal_emulator] [web_browser]
 systemctl enable sddm
 ```
 
-You'll want to install video drivers next. If you are running an modern nvidia graphics card then follow the instructions below. Otherwise, go to the [Arch wiki](https://wiki.archlinux.org)and search for your drivers.
+You'll want to install video drivers next. If you are running an modern nvidia graphics card then follow the instructions below. Otherwise, go to the [Arch wiki](https://wiki.archlinux.org) and search for your drivers.
 
 ```bash
 sudo pacman -S nvidia nvidia-dkms nvidia-settings nvidia-utils
