@@ -149,7 +149,7 @@ You'll want to install video drivers next. If you are running an modern nvidia g
 sudo pacman -S nvidia nvidia-dkms nvidia-settings nvidia-utils
 ```
 
-now on boot you should see a login screen, just log in with the user account you made earlier.
+Now, on boot you should see a login screen, just log in with the user account you made earlier.
 
 ### Use the AUR
 
