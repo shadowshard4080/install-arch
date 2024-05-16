@@ -3,10 +3,16 @@
 # Arch Linux install Guide
 ### Installing
 ---
+- Download the latest [Arch Linux ISO](https://archlinux.org/download/) and burn it to a USB using [Rufus](https://rufus.ie/downloads/).
+- 
 - Set Time  
 ```
 timedatectl set-ntp true
 ```
+- Connect to the Internet
+  
+You can connect with an Ethernet cable, or use [iwctl](https://joshtronic.com/2021/11/21/connecting-to-wifi-with-iwd/).
+
 - Determine the disk you want to use with `fdisk`  
 ```
 fdisk -l
