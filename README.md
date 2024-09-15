@@ -86,13 +86,10 @@ grub-mkconfig -o /boot/grub/grub.cfg
 ```
 If dual-booting edit the grub config at `/etc/default/grub` and setting `GRUB_DISABLE_OS_PROBER=true` to false, `GRUB_DISABLE_OS_PROBER=false`
 
-Exit the chroot by typing `exit` then unmount the mounted partitions using `umount /dev/sdx1` for all the mounted partitions. 
-
-`reboot now` to restart into the new system.
 ### Desktop environment installation
 ---
-Mount the partitions, log in as root with either [`su`](https://wiki.archlinux.org/title/su) or by exiting the current session and using the username `root`.
-Then install the required packages for your desktop environment, for example kde-plasma:
+Install the required packages for your desktop environment, for example kde-plasma:
+> If you have issues during this step, it may be system-specific. Try exiting the chroot by typing `exit` then unmount the mounted partitions using `umount /dev/sdx1` for all the mounted partitions. Then run `reboot now` to restart, mount the partitions, log in as root with either [`su`](https://wiki.archlinux.org/title/su) or by exiting the current session and using the username `root`.
 ```
 pacman -Sy xorg plasma-desktop sddm [terminal_emulator] [web_browser] git networkmanager packagekit-qt5 plasma-wayland-session discover plasma-nm [optional: 'kde-applications']
 systemctl enable sddm
@@ -100,6 +97,7 @@ systemctl enable NetworkManager.service
 reboot now
 ```
 Now on boot, you should see a login screen, just log in with the user account you made earlier.
+
 ### Use the AUR
 ---
 ***Only install AUR packages as a regular user. DO NOT use sudo.*** It will ask for sudo password during the process.  
