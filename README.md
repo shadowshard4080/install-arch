@@ -32,9 +32,9 @@ cfdisk /dev/sda
 >Swap is very optional.  
 - Format the partitions
 ```
-mkfs.ext4 /dev/_root_partition_
-mkswap /dev/_swap_partition_
 mkfs.fat -F 32 /dev/_efi_system_partition_
+mkswap /dev/_swap_partition_
+mkfs.ext4 /dev/_root_partition_
 ```
 - Mount partitions
 ```
