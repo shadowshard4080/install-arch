@@ -42,6 +42,10 @@ mount /dev/_root_partition_ /mnt
 mount --mkdir /dev/efi_system_partition /mnt/boot
 swapon /dev/swap
 ```
+
+- Connect to the Internet
+If you are already connected via Ethernet, you are good to go. If you'd like to connect to Wi-Fi, consult the directions on [this website.](https://joshtronic.com/2021/11/21/connecting-to-wifi-with-iwd/)
+
 - Install needed things 
 ```
 pacstrap /mnt base linux-lts linux-lts-headers linux-firmware base-devel nano sudo
