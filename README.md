@@ -59,6 +59,12 @@ arch-chroot /mnt
 ln -sf /usr/share/zoneinfo/_Region_/_City_ /etc/localtime
 hwclock --systohc
 ```
+For Pacific Standard time, this will be:
+```
+ln -sf /usr/share/zoneinfo/America/Los_Angeles /etc/localtime
+hwclock --systohc
+```
+
 [Edit](https://wiki.archlinux.org/title/Textedit "Textedit")  `/etc/locale.gen` and uncomment `en_US.UTF-8 UTF-8` and other needed [locales](https://wiki.archlinux.org/title/Locale "Locale"). After that, run
 ```
 locale-gen
