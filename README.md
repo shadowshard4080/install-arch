@@ -162,6 +162,8 @@ You may also find the Lutris docs helpful.
 
 https://github.com/lutris/docs/blob/master/InstallingDrivers.md#arch--manjaro--other-arch-linux-derivatives
 
+[Instructions for SecureBoot and TPM, by jpetazzo](https://jpetazzo.github.io/2024/02/23/archlinux-luks-tpm-secureboot-install/).
+
 *See more about installing Arch Linux on El-Wumbus's [wiki pages](https://github.com/El-Wumbus/install-arch/wiki), or clone them to your local system.*
 ```
 git clone https://github.com/El-Wumbus/install-arch.wiki.git
