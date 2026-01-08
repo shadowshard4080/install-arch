@@ -1,170 +1,286 @@
-*[View wiki pages](https://github.com/El-Wumbus/install-arch/wiki)*  
+*[View wiki pages](https://github.com/El-Wumbus/install-arch/wiki)*
 
-# Arch Linux install Guide
-### Installing
+# Arch Install Guide
+### Updated January 2026
 ---
-- Download the latest [Arch Linux ISO](https://archlinux.org/download/) and burn it to a USB using [Rufus](https://rufus.ie/downloads/).
-  
-- Set Time  
-```
-timedatectl set-ntp true
-```
-- Connect to the Internet
-  
-You can connect with an Ethernet cable, or use [iwctl](https://joshtronic.com/2021/11/21/connecting-to-wifi-with-iwd/).
+This repository provides a comprehensive, easy-to-follow guide for installing vanilla Arch Linux on a UEFI machine. This edition of the install guide emphasizes:
 
-- Determine the disk you want to use with `fdisk`  
-```
-fdisk -l
-```
-- Partition with `cfdisk`
+- Better stability (LTS kernel by default)
+- Essential packages for a "ready-to-go" experience
+- Secure Boot support for seamless Windows dual-booting
+- Shared NVMe drive setup for Steam libraries across Windows and Linux
+- Gaming-focused configuration (Steam, OpenRGB, Hyprland + HyDE, Xbox controller, NVIDIA drivers, Wine/Bottles)
+- Post-install enhancements (OneDrive sync, EasyEffects audio stack)
 
-Your drive will be /dev/nvme, /dev/sda, or something similar.
-```
-cfdisk /dev/sda
-```
-|Mount Point|Partition		 |Partition Type  |Recommended Sizes |
-|-----------|----------------|----------------|------------------|
-|`/mnt/boot`|`/dev/efi_part` |efi_system_part |*500MB*|
-|`[swap]`	|`/dev/swap_part`|Linux swap|*More than 1GB*|
-|`/mnt`		|`/dev/root_part`|Linux-filesystem|*Remainder of device*|
+The core installation remains vanilla Arch—no automated scripts or third-party installers.
 
->Swap is very optional.  
-- Format the partitions
-```
-mkfs.fat -F 32 /dev/_efi_system_partition_
-mkswap /dev/_swap_partition_
-mkfs.ext4 /dev/_root_partition_
-```
-- Mount partitions
-```
-mount /dev/_root_partition_ /mnt
-mount --mkdir /dev/efi_system_partition /mnt/boot
-swapon /dev/swap
-```
+> **Warning:** Always double-check disk identifiers with `lsblk` or `fdisk -l`, back up important data, and consider testing in a VM before making permanent changes.
 
-- Connect to the Internet
-If you are already connected via Ethernet, you are good to go. If you'd like to connect to Wi-Fi, consult the directions on [this website.](https://joshtronic.com/2021/11/21/connecting-to-wifi-with-iwd/)
-
-- Install needed things 
-```
-pacstrap /mnt base linux-lts linux-lts-headers linux-firmware base-devel nano sudo
-```
-- Generate fstab
-```
-genfstab -U /mnt >> /mnt/etc/fstab
-```
-- Chroot into the system
-```
-arch-chroot /mnt
-```
-- Fix Time
-```
-ln -sf /usr/share/zoneinfo/_Region_/_City_ /etc/localtime
-hwclock --systohc
-```
-For Pacific Standard time, this will be:
-```
-ln -sf /usr/share/zoneinfo/America/Los_Angeles /etc/localtime
-hwclock --systohc
-```
-
-[Edit](https://wiki.archlinux.org/title/Textedit "Textedit")  `/etc/locale.gen` and uncomment `en_US.UTF-8 UTF-8` and other needed [locales](https://wiki.archlinux.org/title/Locale "Locale"). After that, run
-```
-locale-gen
-echo "LANG=en_US.UTF-8_" >> /etc/locale.conf
-echo "[your_computerhostname]" > /etc/hostname
-```
-Set your root password with `passwd`
-Edit your sudoers file with `EDITOR='nano' visudo`, find and uncomment<br>`#%sudo ALL=(ALl) All`. So it should look like this:  
-```
-%sudo ALL=(ALL) ALL
-```
-Create a user account with `sudo` permissions by using
-```
-groupadd sudo
-useradd -m -G wheel,sudo [your_username_here]
-passwd [your_username_here]
-```
-Install grub bootloader
-```
-pacman -Sy grub efibootmgr os-prober
-grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
-```
-```
-grub-mkconfig -o /boot/grub/grub.cfg
-```
-If dual-booting edit the grub config at `/etc/default/grub` and setting `GRUB_DISABLE_OS_PROBER=true` to false, `GRUB_DISABLE_OS_PROBER=false`
-
-### Desktop environment installation
+### Tips Before You Begin
 ---
-Install the required packages for your desktop environment, for example kde-plasma:
-> If you have issues during this step, it may be system-specific. Try exiting the chroot by typing `exit` then unmount the mounted partitions using `umount /dev/sdx1` for all the mounted partitions. Then run `reboot now` to restart, mount the partitions, log in as root with either [`su`](https://wiki.archlinux.org/title/su) or by exiting the current session and using the username `root`.
+- Capture quick screenshots or diagrams of the target partition layout and your firmware's Secure Boot pages so you can revert settings confidently.
+- Keep a copy of `lsblk`/`fdisk` output in a notes app or on paper while installing to avoid mixing up disks.
+- Verify ISO checksums and signatures before flashing the installer media (commands shown in Step 1).
+- If you restart after partitioning, ensure you remount partitions before proceeding.
+- The official `archinstall` TUI (run from the live media) can walk through partitioning and locale selection and then hand back control, but this guide assumes manual steps for clarity.
 
-**To install KDE Plasma:**
-```
-pacman -Sy xorg plasma-desktop sddm [terminal_emulator] [web_browser] git networkmanager packagekit-qt5 plasma-wayland-session discover plasma-nm [optional: 'kde-applications']
-systemctl enable sddm
-systemctl enable NetworkManager.service
-reboot now
-```
-**To install hyprland:**
-
-[Hyde Project](https://github.com/Hyde-project/hyde)
-
-Now on boot, you should see a login screen, just log in with the user account you made earlier.
-
-### Use the AUR
+### Installation Steps
 ---
-***Only install AUR packages as a regular user. DO NOT use sudo.*** It will ask for sudo password during the process.  
+1. **Prepare the Bootable USB**
+   - Download the latest Arch Linux ISO from [archlinux.org/download](https://archlinux.org/download/).
+   - Verify the download:
+     ```bash
+     sha256sum archlinux-*.iso
+     gpg --keyserver hkps://keys.openpgp.org --recv-keys 0xE8FBA9E3E46C4B17
+     gpg --verify archlinux-*.iso.sig archlinux-*.iso
+     ```
+   - Flash it to a USB drive with Rufus (Windows) or `dd` (Linux/macOS).
 
-There are two ways to use the arch user repository, manually and using an AUR helper. Do not do either as root, or with sudo!
-#### Manually
-***git** must be installed*
+2. **Boot into the Live Environment**
+   - Enter BIOS/UEFI (F2/Del/etc.), ensure UEFI mode is enabled, and boot from the USB.
+   - Once the live shell loads, synchronize time:
+     ```bash
+     timedatectl set-ntp true
+     ```
+
+3. **Connect to the Internet**
+   - **Ethernet:** Usually connects automatically.
+   - **Wi-Fi (with `iwctl`):**
+     ```bash
+     iwctl
+     device list
+     station wlan0 scan
+     station wlan0 get-networks
+     station wlan0 connect "YourSSID"
+     # Enter the password if prompted
+     exit
+     ```
+   - Test connectivity:
+     ```bash
+     ping archlinux.org
+     ```
+
+4. **Partition the Disks**
+   - You may skip doing this manually by using `archinstall`, but otherwise:
+   - Use `lsblk` to identify disks (ideally, Arch on `/dev/nvme1n1`, shared games drive on `/dev/nvme2n1`, Windows on `/dev/nvme0n1`).
+   - For the Arch drive:
+     ```bash
+     cfdisk /dev/nvme1n1
+     # Create:
+     #  - EFI partition: 512MB, type EFI System
+     #  - Optional swap: 8–16GB (or match RAM for hibernation)
+     #  - Root: Remaining space, type Linux filesystem
+     ```
+   - Shared games drive (format as NTFS if needed for Windows/Linux sharing):
+     ```bash
+     mkfs.ntfs -Q /dev/nvme2n1  # Quick format; wipes all data!
+     ```
+   > Prefer a guided partitioner while staying close to vanilla? Launch `archinstall` from the live shell to step through disk prep interactively, then return here.
+
+5. **Format and Mount Partitions (Arch Drive)**
+   ```bash
+   mkfs.fat -F32 /dev/nvme1n1p1  # EFI
+   mkswap /dev/nvme1n1p2         # Swap (if created)
+   swapon /dev/nvme1n1p2
+   mkfs.ext4 /dev/nvme1n1p3      # Root
+
+   mount /dev/nvme1n1p3 /mnt
+   mount --mkdir /dev/nvme1n1p1 /mnt/boot
+   ```
+
+6. **Install Base System (Stability + Essentials)**
+   ```bash
+   pacstrap /mnt base linux-lts linux-lts-headers linux-firmware base-devel nano sudo git networkmanager man-db man-pages efibootmgr
+   ```
+
+7. **Generate `fstab`**
+   ```bash
+   genfstab -U /mnt >> /mnt/etc/fstab
+   ```
+
+8. **Chroot into the New System**
+   ```bash
+   arch-chroot /mnt
+   ```
+
+9. **Basic Configuration (Inside Chroot)**
+   - **Timezone (example: Seattle, see the [Arch timezone list](https://wiki.archlinux.org/title/Time_zone)):**
+     ```bash
+     ln -sf /usr/share/zoneinfo/America/Los_Angeles /etc/localtime
+     hwclock --systohc
+     ```
+   - **Locales:** Edit `/etc/locale.gen` (uncomment `en_US.UTF-8 UTF-8` and desired locales), then:
+     ```bash
+     locale-gen
+     echo "LANG=en_US.UTF-8" > /etc/locale.conf
+     ```
+   - **Hostname:**
+     ```bash
+     echo myhostname > /etc/hostname
+     ```
+   - **Root Password:**
+     ```bash
+     passwd
+     ```
+   - **Sudo + User:** Edit `/etc/sudoers` (uncomment `%wheel ALL=(ALL:ALL) ALL`), then create a user:
+     ```bash
+     useradd -m -G wheel,sudo yourusername
+     passwd yourusername
+     ```
+   - You'll need to quit archinstall here if you used it to skip these steps.
+
+10. **Bootloader with Secure Boot (systemd-boot Recommended)**
+    - Install and configure Secure Boot tooling:
+      ```bash
+      bootctl --path=/boot install
+      pacman -S sbctl sbsigntools
+      sbctl create-keys
+      sbctl enroll-keys --microsoft  # Keeps Windows bootable
+      ```
+    - Enable UKI support: edit `/etc/mkinitcpio.conf` HOOKS to include `systemd` and `kms`, then:
+      ```bash
+      mkinitcpio -P
+      sbctl sign -s /boot/EFI/BOOT/BOOTX64.EFI
+      sbctl sign -s /boot/EFI/systemd/systemd-bootx64.efi
+      sbctl sign -s /boot/EFI/Linux/*.efi
+      sbctl verify
+      ```
+    - Create `/boot/loader/entries/arch.conf`:
+      ```
+      title   Arch Linux LTS
+      linux   /vmlinuz-linux-lts
+      initrd  /initramfs-linux-lts.img
+      options root=PARTUUID=xxxx-xxxx rw  # Replace with your root PARTUUID (via blkid)
+      ```
+    - Edit `/boot/loader/loader.conf` to set `default arch.conf` and `timeout 5`.
+    - *Tip:* Snap a photo of your Secure Boot firmware page before changing keys so you can restore the prior state if needed.
+
+11. **Enable Services and Reboot**
+    ```bash
+    systemctl enable NetworkManager
+    exit
+    umount -a
+    reboot
+    ```
+    After reboot, re-enter BIOS to enable Secure Boot. Windows should remain selectable in the boot menu.
+
+### Post-Installation Setup
+---
+#### Shared NVMe Drive for Steam Games
+```bash
+sudo pacman -S ntfs-3g
+sudo mkdir /mnt/games
+# Add to /etc/fstab (replace UUID with blkid output):
+UUID=XXXX-XXXX /mnt/games ntfs-3g uid=1000,gid=1000,umask=0022 0 0
+sudo mount -a
 ```
-git clone [aur package git link]
-cd ./[aur package name]
+Set `/mnt/games/SteamLibrary` as a Steam library directory (D:\SteamLibrary will still work in Windows).
+
+#### Sample Btrfs `fstab` Entry (if you prefer snapshots)
+```bash
+UUID=YYYY-YYYY / btrfs subvol=@,compress=zstd,ssd,space_cache=v2,noatime 0 0
+UUID=YYYY-YYYY /home btrfs subvol=@home,compress=zstd,ssd,space_cache=v2,noatime 0 0
+```
+Adjust UUIDs/subvol names to match `btrfs subvolume list /mnt` output.
+
+#### Desktop Environment Options (Wayland Focused)
+Choose the environment that fits your workflow; both run well on gaming rigs and support Secure Boot setups.
+
+**KDE Plasma (Wayland Session)**
+```bash
+sudo pacman -S xorg plasma-desktop sddm konsole firefox dolphin \
+  plasma-wayland-session kde-gtk-config kvantum-qt5 packagekit-qt5 discover
+sudo systemctl enable sddm
+sudo systemctl enable NetworkManager
+```
+After reboot, pick the Wayland session on the SDDM login screen.
+
+**Hyprland + HyDE (Tiling Wayland WM)**
+```bash
+sudo pacman -S hyprland xdg-desktop-portal-hyprland
+```
+Then install HyDE:
+```bash
+git clone https://github.com/HyDE-Project/HyDE.git
+cd HyDE
+./install.sh
+```
+Follow the HyDE prompts for theming and plugins.
+
+#### Using the Arch User Repository (AUR)
+There are two ways to use the Arch User Repository—manual builds or an AUR helper. Do **not** run either method as `root` or with `sudo` (the tooling will prompt for elevated access when needed).
+
+**Manual install (requires `git`):**
+```bash
+git clone [aur-package-git-url]
+cd [aur-package-name]
 makepkg -si
-``` 
-#### With an AUR helper
-***git** must be installed*
 ```
-git clone https://aur.archlinux.org/yay.git 
+
+**With an AUR helper (`yay`, requires `git`):**
+```bash
+git clone https://aur.archlinux.org/yay.git
 cd yay
 makepkg -si
 cd ..
 rm -rf yay
 ```
-Then to use it, use 
-```
+To install packages afterward:
+```bash
 yay -S [package]
 ```
-yay uses the same syntax as pacman does.
+`yay` mirrors `pacman` syntax, so `yay -Syu` refreshes the system plus AUR packages.
 
-To install Steam, edit the pacman config file:
+#### Gaming Essentials
+- Enable `[multilib]` in `/etc/pacman.conf`, then run `sudo pacman -Syu`.
+- NVIDIA drivers:
+  ```bash
+  sudo pacman -S nvidia nvidia-utils nvidia-settings
+  # Legacy example:
+  yay -S nvidia-470xx-dkms
+  ```
+- Steam and friends:
+  ```bash
+  sudo pacman -S steam vulkan-icd-loader lib32-vulkan-icd-loader wine bottles
+  yay -S openrgb xone-dkms
+  ```
 
+#### OneDrive Support
+```bash
+yay -S onedrive-abraunegg
+onedrive  # Authenticate via browser
+systemctl --user enable --now onedrive
+# Optional GUI:
+yay -S onedrivegui-git
 ```
-sudo nano /etc/pacman.conf
+
+#### Improved Audio (PipeWire + EasyEffects)
+```bash
+sudo pacman -S pipewire pipewire-audio pipewire-pulse pipewire-alsa wireplumber easyeffects
+systemctl --user enable --now pipewire pipewire-pulse wireplumber
 ```
-Scroll down to the multilib section and uncomment the `[multilib]` line and the `include...` line underneath it. Save the file and exit the editor.
-Now run:
+Launch EasyEffects for EQ presets, bass boost, and filters.
+
+#### Config Backup with `rsync`
+```bash
+sudo rsync -aAXHv --delete /etc /home /var/lib/NetworkManager/system-connections \
+  /mnt/backup/$(hostname)-$(date +%F)
 ```
-sudo pacman -Syu Steam
-```
+Capture `/etc`, dotfiles (`~/.config`), and custom Hyprland/HyDE assets before big tweaks so you can roll back quickly.
 
-Graphics drivers should work out of the box. To install GPU-specific drivers for gaming, refer to the Arch Wiki.
+### Troubleshooting Appendix (Quick Hits)
+---
+- **Wi-Fi fails in live ISO:** ensure `rfkill list` shows devices unblocked, then reload drivers with `modprobe -r iwlwifi && modprobe iwlwifi`.
+- **Secure Boot errors on boot:** boot into BIOS, clear keys, re-run `sbctl verify`, and resign the EFI binaries (`sbctl sign -s ...`).
+- **NVIDIA + Wayland glitches:** switch to the latest `nvidia` + `nvidia-settings`, set `nvidia_drm.modeset=1` in the loader options, and ensure `vrr=1` is only enabled where supported.
 
-[Nvidia Graphics](https://wiki.archlinux.org/title/NVIDIA)
 
-[AMD Graphics](https://wiki.archlinux.org/title/AMDGPU)
+### Additional Resources
+---
+- [Arch Wiki: NVIDIA](https://wiki.archlinux.org/title/NVIDIA)
+- [Secure Boot Guide by jpetazzo](https://jpetazzo.github.io/2024/02/23/archlinux-luks-tpm-secureboot-install/)
+- [HyDE Project](https://github.com/HyDE-project/hyde)
+- [Hyprland Community Themes & Configs](https://github.com/hyprland-community/awesome-hyprland)
+- [Archinstall Reference](https://wiki.archlinux.org/title/Archinstall)
+- [Clone El-Wumbus's Arch Wiki](`git clone https://github.com/El-Wumbus/install-arch.wiki.git`)
 
-You may also find the Lutris docs helpful.
-
-https://github.com/lutris/docs/blob/master/InstallingDrivers.md#arch--manjaro--other-arch-linux-derivatives
-
-[Instructions for SecureBoot and TPM, by jpetazzo](https://jpetazzo.github.io/2024/02/23/archlinux-luks-tpm-secureboot-install/).
-
-*See more about installing Arch Linux on El-Wumbus's [wiki pages](https://github.com/El-Wumbus/install-arch/wiki), or clone them to your local system.*
-```
-git clone https://github.com/El-Wumbus/install-arch.wiki.git
-```
