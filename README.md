@@ -35,6 +35,8 @@ The core installation remains vanilla Arch—no automated scripts or third-party
      gpg --verify archlinux-*.iso.sig archlinux-*.iso
      ```
    - Flash it to a USB drive with Rufus (Windows) or `dd` (Linux/macOS).
+     https://rufus.ie/en/
+     
 
 2. **Boot into the Live Environment**
    - Enter BIOS/UEFI (F2/Del/etc.), ensure UEFI mode is enabled, and boot from the USB.
