@@ -168,7 +168,12 @@ The core installation remains vanilla Arch—no automated scripts or third-party
 
 ### Post-Installation Setup
 ---
-#### Shared NVMe Drive for Steam Games, or add NVMe drives:
+#### Shared NVMe Drive for Steam Games, or add NVMe drives
+Consider using GParted: 
+```bash
+sudo pacman -S gparted
+```
+Otherwise, manually:
 ```bash
 sudo pacman -S ntfs-3g
 sudo mkdir /mnt/games
