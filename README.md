@@ -293,6 +293,12 @@ sudo rsync -aAXHv --delete /etc /home /var/lib/NetworkManager/system-connections
 ```
 Capture `/etc`, dotfiles (`~/.config`), and custom Hyprland/HyDE assets before big tweaks so you can roll back quickly.
 
+### Other useful tools:
+- Octopi: GUI for updating packages.
+- Ark - for managing zip files in Dolphin file manager.
+- Emudeck and Steam ROM Manager - Easy emulation, integrates with Steam.
+- Flatseal - Flatpak permissions manager. May help unbork packages installed via Flatpak that have permission issues.
+
 ### Troubleshooting Appendix (Quick Hits)
 ---
 - **Wi-Fi fails in live ISO:** ensure `rfkill list` shows devices unblocked, then reload drivers with `modprobe -r iwlwifi && modprobe iwlwifi`.
