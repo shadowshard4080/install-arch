@@ -253,6 +253,20 @@ yay -S [package]
   ```
 Xone is for easy Xbox controller support.
 
+#### Use Winboat (run Windows apps easily)
+```bash
+sudo pacman -S docker docker-compose freerdp gtk3 alsa-lib nss #install dependencies
+sudo systemctl enable --now docker, sudo usermod -aG docker $USER
+```
+Logout > log back in. Test with `docker run hello-world`.
+
+```bash
+yay -S winboat-bin # or winboat source
+winboat
+```
+First launch will set up Windows env. Make sure you have a Windows ISO downloaded. Windows 10 or 11 LTSC recommended.
+Winboat is still in beta.
+
 #### OneDrive Support
 ```bash
 yay -S onedrive-abraunegg
