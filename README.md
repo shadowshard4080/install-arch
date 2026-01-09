@@ -171,7 +171,7 @@ The core installation remains vanilla Arch—no automated scripts or third-party
 #### Shared NVMe Drive for Steam Games, or add NVMe drives
 Consider using GParted: 
 ```bash
-sudo pacman -S gparted
+sudo pacman -S gparted ntfs-3g
 ```
 Otherwise, manually:
 ```bash
