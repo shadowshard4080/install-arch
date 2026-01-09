@@ -298,6 +298,7 @@ Capture `/etc`, dotfiles (`~/.config`), and custom Hyprland/HyDE assets before b
 - Ark - for managing zip files in Dolphin file manager.
 - Emudeck and Steam ROM Manager - Easy emulation, integrates with Steam.
 - Flatseal - Flatpak permissions manager. May help unbork packages installed via Flatpak that have permission issues.
+- nvidia-settings - GUI for managing Nvidia drivers.
 
 ### Troubleshooting Appendix (Quick Hits)
 ---
