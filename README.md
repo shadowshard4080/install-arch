@@ -168,7 +168,7 @@ The core installation remains vanilla Arch—no automated scripts or third-party
 
 ### Post-Installation Setup
 ---
-#### Shared NVMe Drive for Steam Games
+#### Shared NVMe Drive for Steam Games, or add NVMe drives:
 ```bash
 sudo pacman -S ntfs-3g
 sudo mkdir /mnt/games
@@ -246,14 +246,18 @@ yay -S [package]
   sudo pacman -S steam vulkan-icd-loader lib32-vulkan-icd-loader wine bottles
   yay -S openrgb xone-dkms
   ```
+Xone is for easy Xbox controller support.
 
 #### OneDrive Support
 ```bash
 yay -S onedrive-abraunegg
-onedrive  # Authenticate via browser
-systemctl --user enable --now onedrive
 # Optional GUI:
 yay -S onedrivegui-git
+```
+If you choose to use the GUI, follow the steps in the app. Otherwise, set up abraunegg OneDrive in terminal:
+```bash
+onedrive  # Authenticate via browser
+systemctl --user enable --now onedrive
 ```
 
 #### Improved Audio (PipeWire + EasyEffects)
